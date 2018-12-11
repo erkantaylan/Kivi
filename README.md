@@ -16,7 +16,7 @@ I am basicly doing html parse from `http://tureng.com/tr/turkce-ingilizce/{word}
 
 # TODO List
 
-- [ ] Add shortcut to enable program.
+- [X] Add shortcut to enable program. Activated by Scroll Lock key and translates last copied text
 
 - [ ] Fast translate selected word with a shortcut.
 
