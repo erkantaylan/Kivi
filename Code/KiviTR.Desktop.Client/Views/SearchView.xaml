@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="KiviTR.Desktop.Client.Views.SearchView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:mvvm="http://prismlibrary.com/"
+             xmlns:views="clr-namespace:KiviTR.Desktop.Client.Views"
+             mvvm:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d">
+    <DockPanel FocusManager.FocusedElement="{Binding ElementName=txtSearchbox}">
+        <Grid VerticalAlignment="Top" DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="txtSearchbox"
+                     controls:TextBoxHelper.Watermark="Search"
+                     FontSize="18"
+                     IsUndoEnabled="True"
+
+                     MinWidth="200"
+                     Margin="{StaticResource GlobalMargin}"
+                     Padding="{StaticResource GlobalPadding}"
+                     Text="{Binding SearchValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Button FontSize="18"
+                    IsDefault="True"
+                    Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    Command="{Binding ExecuteSearchDelegateCommand}"
+                    Margin="{StaticResource GlobalMargin}"
+                    Padding="{StaticResource GlobalPadding}" Width="38">
+                <iconPacks:PackIconModern Kind="PageSearch" />
+            </Button>
+        </Grid>
+        <views:ResultView />
+    </DockPanel>
+</UserControl>

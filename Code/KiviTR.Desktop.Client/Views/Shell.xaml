@@ -1,0 +1,14 @@
+﻿<controls:MetroWindow x:Class="KiviTR.Desktop.Client.Views.Shell"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:views="clr-namespace:KiviTR.Desktop.Client.Views"
+                      mc:Ignorable="d"
+                      Height="500" Width="500"
+                      Title="KIVI-TR - SOURCE PROVIDED BY TURENG">
+    <DockPanel>
+        <views:SearchView DockPanel.Dock="Top" x:Name="searchView" />
+    </DockPanel>
+</controls:MetroWindow>
