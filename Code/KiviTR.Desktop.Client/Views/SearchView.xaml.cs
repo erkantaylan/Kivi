@@ -13,7 +13,7 @@ namespace KiviTR.Desktop.Client.Views
         public SearchView()
         {
             InitializeComponent();
-            HotKeyManager.RegisterHotKey(Keys.Scroll, ModifierKeys.None);
+            HotKeyManager.RegisterHotKey(Keys.D1, ModifierKeys.Shift | ModifierKeys.Alt);
             HotKeyManager.HotKeyPressed += HotKeyManagerOnHotKeyPressed;
         }
 

@@ -6,8 +6,11 @@
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       xmlns:views="clr-namespace:KiviTR.Desktop.Client.Views"
                       mc:Ignorable="d"
-                      Height="500" Width="500"
-                      Title="KIVI-TR - SOURCE PROVIDED BY TURENG">
+                      Height="500"
+                      Width="500"
+                      BorderThickness="4"
+                      Icon="../Resources/kiwi.png"
+                      Title="KIWI-TR - SOURCE PROVIDED BY TURENG">
     <DockPanel>
         <views:SearchView DockPanel.Dock="Top" x:Name="searchView" />
     </DockPanel>

@@ -19,7 +19,7 @@
                      controls:TextBoxHelper.Watermark="Search"
                      FontSize="18"
                      IsUndoEnabled="True"
-
+                     
                      MinWidth="200"
                      Margin="{StaticResource GlobalMargin}"
                      Padding="{StaticResource GlobalPadding}"
