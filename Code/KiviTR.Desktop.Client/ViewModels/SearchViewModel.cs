@@ -24,7 +24,6 @@ namespace KiviTR.Desktop.Client.ViewModels
         {
             ExecuteSearchDelegateCommand = new DelegateCommand(() => { Search(searchValue); }, CanExecute);
 
-
             HotKeyManager.RegisterHotKey(Keys.F12, ModifierKeys.Control);
             HotKeyManager.HotKeyPressed += (sender, args) =>
             {
@@ -37,6 +36,15 @@ namespace KiviTR.Desktop.Client.ViewModels
                     MessageBox.Show(exception.ToString());
                 }
             };
+
+            if (Environment.GetCommandLineArgs().Length > 1)
+            {
+                string keyword = Environment.GetCommandLineArgs()[1];
+                if (keyword.Trim().Length > 0)
+                {
+                    Search(keyword);
+                }
+            }
         }
 
 
