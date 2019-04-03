@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Windows;
+using System.Windows.Forms;
+using System.Windows.Input;
 using JetBrains.Annotations;
 using KiviTR.Common;
 using KiviTR.Common.Models;
 using Prism.Commands;
 using Prism.Mvvm;
+using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
 
 namespace KiviTR.Desktop.Client.ViewModels
 {
-
     [UsedImplicitly]
     public class SearchViewModel : BindableBase
     {
@@ -21,8 +22,23 @@ namespace KiviTR.Desktop.Client.ViewModels
 
         public SearchViewModel()
         {
-            ExecuteSearchDelegateCommand = new DelegateCommand(() => SearchAsync(), CanExecute);
+            ExecuteSearchDelegateCommand = new DelegateCommand(() => { Search(searchValue); }, CanExecute);
+
+
+            HotKeyManager.RegisterHotKey(Keys.F12, ModifierKeys.Control);
+            HotKeyManager.HotKeyPressed += (sender, args) =>
+            {
+                try
+                {
+                    Application.Current.Dispatcher.Invoke(() => { Search(Clipboard.GetText()); });
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(exception.ToString());
+                }
+            };
         }
+
 
         private string Url => $"http://tureng.com/en/turkish-english/{SearchValue}";
 
@@ -61,37 +77,37 @@ namespace KiviTR.Desktop.Client.ViewModels
 
         public DelegateCommand ExecuteSearchDelegateCommand { get; }
 
-        public Task SearchAsync(string key)
+        public void Search(string key)
         {
             SearchValue = key;
-            return Task.Factory.StartNew(Execute);
+            Execute();
         }
 
-
-        public Task SearchAsync()
+        private async void Execute()
         {
-            return Task.Factory.StartNew(Execute);
-        }
+            RunFunc(
+                () =>
+                {
+                    MeaningsA = new ObservableCollection<Meaning>();
+                    MeaningsB = new ObservableCollection<Meaning>();
+                });
 
-        private void Execute()
-        {
+
             try
             {
-                Request request = new Request();
-                string html = request.SimpleGet(Url);
-                TurengHtmlParser parser = new TurengHtmlParser(html, SearchValue);
+                var request = new Request();
+                string html = await request.SimpleGetAsync(Url);
+                var parser = new TurengHtmlParser(html, SearchValue);
                 VocabularyTranslate translated = parser.Translate();
 
-                MeaningsA = new ObservableCollection<Meaning>();
-                MeaningsB = new ObservableCollection<Meaning>();
                 if (translated.MeaningsA != null)
                 {
-                    MeaningsA.AddRange(translated.MeaningsA);
+                    RunFunc(() => { MeaningsA.AddRange(translated.MeaningsA); });
                 }
 
                 if (translated.MeaningsB != null)
                 {
-                    MeaningsB.AddRange(translated.MeaningsB);
+                    RunFunc(() => { MeaningsB.AddRange(translated.MeaningsB); });
                 }
             }
             catch (NullReferenceException)
@@ -108,6 +124,10 @@ namespace KiviTR.Desktop.Client.ViewModels
         {
             return IsEnabled && !string.IsNullOrWhiteSpace(SearchValue);
         }
-    }
 
+        public static void RunFunc(Action action)
+        {
+            Application.Current.Dispatcher.Invoke(action);
+        }
+    }
 }

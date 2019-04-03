@@ -6,7 +6,6 @@ using System.Windows.Input;
 
 namespace KiviTR.Common
 {
-
     public static class HotKeyManager
     {
         private static volatile MessageWindow wnd;
@@ -15,18 +14,13 @@ namespace KiviTR.Common
 
         private static int locationId;
 
-
         static HotKeyManager()
         {
-            Thread messageLoop = new Thread(Message);
+            var messageLoop = new Thread(
+                delegate() { Application.Run(new MessageWindow()); });
             messageLoop.Name = "MessageLoopThread";
             messageLoop.IsBackground = true;
             messageLoop.Start();
-        }
-        
-        private static void Message()
-        {
-            Application.Run(new MessageWindow());
         }
 
         public static event EventHandler<HotKeyEventArgs> HotKeyPressed;
@@ -85,7 +79,7 @@ namespace KiviTR.Common
             {
                 if (m.Msg == WM_HOTKEY)
                 {
-                    HotKeyEventArgs e = new HotKeyEventArgs(m.LParam);
+                    var e = new HotKeyEventArgs(m.LParam);
                     OnHotKeyPressed(e);
                 }
 
@@ -118,5 +112,4 @@ namespace KiviTR.Common
             Modifiers = (ModifierKeys) (param & 0x0000ffff);
         }
     }
-
 }
